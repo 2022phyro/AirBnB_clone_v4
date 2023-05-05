@@ -39,7 +39,10 @@ button:hover {
     margin-left: 15%;
     margin-top: 0;
     font-weight: 400;
+    white-space: nowrap;
     font-size: 14px;
+    text-overflow: ellipsis;
+    width: 25%;
 }
 .locations {
     height: 100%;
