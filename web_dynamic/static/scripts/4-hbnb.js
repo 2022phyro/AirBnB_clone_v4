@@ -21,17 +21,16 @@ $('document').ready(function () {
       }
     }
   });
-function fetch(_data) {
-  $.ajax({
-    url: 'http://127.0.0.1:5001/api/v1/places_search',
-    type: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(_data),
-    success: function (response) {
-      $('.places').html('<ul></ul>');
-	    console.log(response.length)
-      response.forEach(function (place) {
-        $.get(`http://127.0.0.1:5001/api/v1/users/${place.user_id}`, function (data) {
+  function fetch (_data) {
+    $.ajax({
+      url: 'http://127.0.0.1:5001/api/v1/places_search',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(_data),
+      success: function (response) {
+        $('.places').html('<ul></ul>');
+        /* console.log(response); */
+        response.forEach(function (place) {
           $('.places ul').append(`
         <li>
           <article>
@@ -53,7 +52,7 @@ function fetch(_data) {
              </div>
            </div>
            <div class="user">
-             <b>Owner:</b> ${data.first_name} ${data.last_name}
+             <b>Owner:</b> ${place.owner}
            </div>
            <div class="description">
              ${place.description}
@@ -62,21 +61,20 @@ function fetch(_data) {
        </li>
         `);
         });
-      });
-    }
-  });
-}
-fetch({})
-  $('button').on('click', function (event) {
-    let names = $('.amenities h4').text().split(', ');
-    let val = [];
-    $('.amenities input[type="checkbox"]').each(function () {
-        if (names.includes($(this).attr('data-name'))) {
-          val.push($(this).attr('data-id'))
-	}
+      }
     });
-    amenity = {'amenity_ids': val}
-    console.log(val)
-    fetch(amenity)
+  }
+  fetch({});
+  $('button').on('click', function (event) {
+    const names = $('.amenities h4').text().split(', ');
+    const val = [];
+    $('.amenities input[type="checkbox"]').each(function () {
+      if (names.includes($(this).attr('data-name'))) {
+        val.push($(this).attr('data-id'));
+      }
+    });
+    const amenity = { amenities: val };
+    /* console.log(amenity); */
+    fetch(amenity);
   });
 });

@@ -29,8 +29,7 @@ $('document').ready(function () {
     success: function (response) {
       $('.places').html('<ul></ul>');
       response.forEach(function (place) {
-        $.get(`http://127.0.0.1:5001/api/v1/users/${place.user_id}`, function (data) {
-          $('.places ul').append(`
+        $('.places ul').append(`
         <li>
           <article>
             <div class="title_box">
@@ -51,7 +50,7 @@ $('document').ready(function () {
              </div>
            </div>
            <div class="user">
-             <b>Owner:</b> ${data.first_name} ${data.last_name}
+             <b>Owner:</b> ${place.owner}
            </div>
            <div class="description">
              ${place.description}
@@ -59,7 +58,6 @@ $('document').ready(function () {
          </article>
        </li>
         `);
-        });
       });
     }
   });
