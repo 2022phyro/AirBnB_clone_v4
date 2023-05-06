@@ -12,7 +12,7 @@ $('document').ready(function () {
     result = result.join(', ');
     $('.amenities h4').text(result);
   });
-  $.get('http://127.0.0.1:5001/api/v1/status/', function (data) {
+  $.get('http://0.0.0.0:5001/api/v1/status/', function (data) {
     if (data.status === 'OK') {
       $('header div#api_status').addClass('available');
     } else {

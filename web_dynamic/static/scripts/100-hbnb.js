@@ -12,7 +12,7 @@ $('document').ready(function () {
     result = result.join(', ');
     $('.amenities h4').text(result);
   });
-  $.get('http://0.0.0.0:5001/api/v1/status/', function (data) {
+  $.get('http://127.0.0.1:5001/api/v1/status/', function (data) {
     if (data.status === 'OK') {
       $('header div#api_status').addClass('available');
     } else {
@@ -23,7 +23,7 @@ $('document').ready(function () {
   });
   function fetch (_data) {
     $.ajax({
-      url: 'http://0.0.0.0:5001/api/v1/places_search',
+      url: 'http://127.0.0.1:5001/api/v1/places_search',
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(_data),
@@ -67,14 +67,26 @@ $('document').ready(function () {
   fetch({});
   $('button').on('click', function (event) {
     const names = $('.amenities h4').text().split(', ');
-    const val = [];
-    $('.amenities input[type="checkbox"]').each(function () {
-      if (names.includes($(this).attr('data-name'))) {
-        val.push($(this).attr('data-id'));
+    const amen = [];
+    const state = [];
+    const city = [];
+    $('.locations h2 input[type="checkbox"]:first-child').each(function () {
+      if (this.checked) {
+        state.push($(this).attr('data-id'));
       }
     });
-    const amenity = { amenities: val };
-    /* console.log(amenity); */
-    fetch(amenity);
+    $('.locations .popover ul li ul li input[type="checkbox"]:first-child').each(function () {
+      if (this.checked) {
+        city.push($(this).attr('data-id'));
+      }
+    });
+    $('.amenities input[type="checkbox"]').each(function () {
+      if (this.checked) {
+        amen.push($(this).attr('data-id'));
+      }
+    });
+    const search = { amenities: amen, states: state, cities: city };
+    /* console.log(search); */
+    fetch(search);
   });
 });
