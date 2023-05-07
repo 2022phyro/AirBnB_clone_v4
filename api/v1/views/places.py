@@ -142,7 +142,9 @@ def places_search():
         places = storage.all(Place).values()
         list_places = []
         for place in places:
-            list_places.append(place.to_dict())
+            d = place.to_dict()
+            d['owner'] = f"{place.user.first_name} {place.user.last_name}"
+            list_places.append(d)
         return jsonify(list_places)
 
     list_places = []
@@ -174,7 +176,9 @@ def places_search():
     places = []
     for p in list_places:
         d = p.to_dict()
+        owner = f"{p.user.first_name} {p.user.last_name}"
         d.pop('amenities', None)
+        d['owner'] = owner
         places.append(d)
 
     return jsonify(places)
